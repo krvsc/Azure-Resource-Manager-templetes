@@ -33,4 +33,54 @@ Azure Resource Manager (ARM) templates are declarative JSON files used to define
 6. **Test and Validate:** Validate the deployed resources to ensure they meet the desired configuration and functionality.
 7. **Update and Redeploy:** Iterate on the ARM template as needed, making updates or changes, and redeploy to reflect the changes in your Azure infrastructure.
 
+✒️ Here are the **steps to deploy** an ARM template using Azure CLI:
+
+1. **Sign in to Azure**: Use the following command to sign in to your Azure account.
+   ```bash
+   az login
+   ```
+
+2. **Select Subscription (if you have multiple subscriptions)**: If you have multiple subscriptions, specify the one you want to use.
+   ```bash
+   az account set --subscription "<subscription_name_or_id>"
+   ```
+
+3. **Create Resource Group**: Create a resource group where your Azure resources will be deployed. Replace `<resource_group_name>` with your desired name and `<location>` with the Azure region where you want to deploy.
+   ```bash
+   az group create --name <resource_group_name> --location <location>
+   ```
+
+4. **Deploy ARM Template**: Deploy your ARM template to the resource group you created. Replace `<template_file_path>` with the path to your ARM template JSON file and `<parameter_file_path>` with the path to your parameter file (if any).
+   ```bash
+   az deployment group create \
+     --resource-group <resource_group_name> \
+     --template-file <template_file_path> \
+     --parameters <parameter_file_path>
+   ```
+
+   If you don't have a separate parameter file and want to provide parameters inline, you can use the `--parameters` flag followed by a JSON string representing your parameters. For example:
+   ```bash
+   az deployment group create \
+     --resource-group <resource_group_name> \
+     --template-file <template_file_path> \
+     --parameters \
+       param1=value1 \
+       param2=value2 \
+       ...
+   ```
+
+5. **Monitor Deployment**: You can monitor the deployment status using the following command. Replace `<resource_group_name>` with your resource group name.
+   ```bash
+   az deployment group show \
+     --name deployment_name \
+     --resource-group <resource_group_name> \
+     --query properties.provisioningState
+   ```
+
+   Replace `deployment_name` with the name of your deployment if you provided it during deployment. If not, you can check the latest deployment using `-n` flag.
+
+6. **Verify Resources**: Once the deployment is complete, verify that your Azure resources are provisioned correctly in the Azure Portal or by using Azure CLI commands such as `az vm list`, `az webapp list`, etc.
+
+These steps will guide you through deploying an ARM template using Azure CLI, providing flexibility and automation in your Azure resource deployment process.
+
 In conclusion, Azure Resource Manager (ARM) templates provide a powerful way to automate the deployment and management of Azure resources, enabling Infrastructure as Code practices and streamlining the cloud infrastructure lifecycle. By leveraging tools like Visual Studio Code and following best practices for ARM template development and deployment, organizations can achieve consistent, scalable, and reliable Azure deployments.
